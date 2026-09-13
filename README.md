@@ -1,43 +1,51 @@
 # LUMI configurator
 
-Адаптивный прототип конфигуратора окон и раздвижных систем для LUMI.
+Rules-driven responsive prototype for window, balcony, entrance and sliding-system configuration.
 
-## Что реализовано
+## What changed in v2
 
-- desktop + mobile UI без сборщика и внешних зависимостей;
-- живой SVG-предпросмотр конструкции справа;
-- ширина и высота доступны на любом шаге;
-- дерево выбора: тип → схема → открывание по секциям → материал → стеклопакет → комфорт → автоподбор системы → комплектация;
-- фильтрация несовместимых вариантов;
-- ПВХ: REHAU BLITZ / GRAZIO / INTELIO 80;
-- алюминий: ALUMARK S50 / S60 / S70 / S158;
-- тёплое / холодное алюминиевое остекление;
-- PSK только в совместимых ПВХ-сценариях;
-- подъёмно-сдвижное открывание автоматически приводит к ALUMARK S158;
-- отдельные понятия «камеры профиля» и «камеры стеклопакета»;
-- комфорт выбирается одним необязательным пакетом: тепло, тишина, солнцезащита, безопасность и сочетания;
-- адаптивная мобильная версия со sticky CTA;
-- SVG sprite `assets/sprite.svg` содержит иллюстрации для всех карточек;
-- исходные CSV-таблицы правил находятся в `data/`.
+- compatibility is centralized in a domain rules engine instead of being scattered across UI handlers;
+- material, mechanism, warm/cold mode and section roles are validated against system capabilities;
+- PSK, lift-slide, entrance groups and balcony blocks have explicit business rules;
+- profile chambers and insulating-glass-unit chambers are modeled separately;
+- comfort is an optional customer intent, not a fake glass formula selector;
+- system recommendation is scoring-based and no longer uses unsupported magic size thresholds;
+- explicit user system choice is preserved while it remains compatible;
+- relevant extras are derived from the actual configuration;
+- live preview respects section proportions and transom / balcony-door layouts better;
+- configuration draft is saved to `localStorage`;
+- Node regression tests cover the main scenario branches.
 
-## Запуск
+## Run locally
 
-Это статический сайт. Откройте `index.html` через локальный HTTP-сервер:
+Static files can be served by any HTTP server. For example:
 
 ```bash
-python -m http.server 8000
+python3 -m http.server 8080
 ```
 
-Затем откройте `http://localhost:8000`.
+Then open `http://localhost:8080`.
 
-## GitHub Pages
+## Tests
 
-В репозитории есть workflow `.github/workflows/pages.yml`. Если Pages ещё не включён, в GitHub откройте **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+No dependencies are required:
 
-После публикации адрес будет:
+```bash
+npm test
+npm run check
+```
 
-`https://kssafonova.github.io/ttiuiytoyityo/`
+## Source structure
 
-## Важно перед production
+- `data.js` — product/domain catalog and capabilities
+- `core-v2.js` — state machine + rules engine
+- `ui-v2.js` — DOM rendering and interactions
+- `styles.css` — base visual system
+- `v2.css` — v2 additions
+- `assets/sprite.svg` — local SVG asset library
+- `tests/rules.test.cjs` — compatibility tests
+- `docs/architecture.md` — architecture and rule decisions
 
-Текущая логика совместимости построена по изученным публичным характеристикам систем и является UX/продуктовой моделью. Перед использованием для коммерческого расчёта необходимо получить от изготовителя инженерные ограничения по Ш×В, весу створок, фурнитуре, точным формулам стеклопакетов и прайс-листам.
+## Important limitation
+
+The application deliberately treats exact width/height limits, statics, sash weight, hardware and final glass formulas as engineering validation until manufacturer/processor production constraints are supplied. It does not fabricate those limits.
