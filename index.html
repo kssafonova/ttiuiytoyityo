@@ -5,9 +5,10 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#f5f8fc" />
   <title>LUMI — конфигуратор окон и раздвижных систем</title>
-  <meta name="description" content="Конфигуратор LUMI: конструкция, размеры, материал, стеклопакет, комфорт, система и комплектация." />
+  <meta name="description" content="Конфигуратор LUMI: размеры и тип, схема и открывание, материал и стекло. Итоговое решение и опции — рядом." />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="styles-v4.css" />
+  <link rel="stylesheet" href="styles-v5.css" />
 </head>
 <body>
   <header class="topbar">
@@ -25,40 +26,79 @@
     <div class="top-actions">
       <span class="location">Москва⌄</span>
       <a class="phone" href="tel:+74952557788"><strong>+7 495 255-77-88</strong><span>Ежедневно с 9:00 до 21:00</span></a>
-      <button class="header-btn topbar-question" type="button" data-lead="call">Заказать звонок</button>
+      <button class="header-btn" type="button" data-lead="call">Заказать звонок</button>
     </div>
   </header>
 
   <main class="page" id="top">
-    <section class="page-head desktop-only" id="configurator">
-      <div><h1>Конфигуратор окон</h1><p>Создайте окно под ваши задачи — несовместимые варианты система скроет сама.</p></div>
+    <section class="page-head" id="configurator">
+      <div>
+        <h1>Конфигуратор окон</h1>
+        <p>Три понятных шага. Итоговое решение обновляется справа сразу после каждого выбора.</p>
+      </div>
       <button id="resetBtn" class="reset" type="button">↻ Сбросить всё</button>
     </section>
 
-    <section class="desktop-shell desktop-only">
-      <div id="desktopEditor" class="desktop-editor" aria-live="polite"></div>
+    <nav id="stepNav" class="step-nav" aria-label="Шаги конфигуратора"></nav>
 
-      <aside class="preview-column">
+    <section class="workbench">
+      <section class="config-card" aria-live="polite">
+        <header class="config-head">
+          <div>
+            <h2 id="stepTitle">Размеры и тип конструкции</h2>
+            <p id="stepSubtitle">Укажите примерный проём и выберите, что именно устанавливаем.</p>
+          </div>
+          <span id="stepCount" class="step-count">01 / 03</span>
+        </header>
+
+        <div id="editor" class="editor"></div>
+
+        <footer class="config-actions">
+          <button id="prevBtn" class="prev" type="button">← Назад</button>
+          <button id="nextBtn" class="next" type="button">Схема и открывание →</button>
+        </footer>
+      </section>
+
+      <aside class="result-column" aria-label="Итоговое решение">
         <section class="preview-card">
           <div class="preview-stage">
             <div class="preview-toolbar">
-              <div class="view-tabs" id="viewTabs" role="tablist" aria-label="Вид конструкции">
-                <button class="is-active" type="button" data-view="inside">Вид изнутри</button>
-                <button type="button" data-view="outside">Вид снаружи</button>
+              <div class="view-tabs" role="tablist" aria-label="Вид конструкции">
+                <button class="is-active" type="button" data-view="inside">Изнутри</button>
+                <button type="button" data-view="outside">Снаружи</button>
                 <button type="button" data-view="scheme">Схема</button>
               </div>
             </div>
-            <div class="window-canvas" id="windowCanvas"></div>
+            <div id="windowCanvas" class="window-canvas"></div>
             <div class="preview-caption">Предварительная визуализация. Финальная геометрия подтверждается после замера.</div>
           </div>
         </section>
 
-        <section class="summary-card">
-          <div class="summary-top"><div><h3 id="summaryTitle">Ваше окно</h3><p id="summarySub"></p></div><button type="button" onclick="document.getElementById('desktopEditor').scrollIntoView({behavior:'smooth'})">Изменить</button></div>
-          <div id="summaryChips" class="summary-chips"></div>
-          <div id="summarySystem" class="summary-system"></div>
-          <div class="quote-box"><div><span>Предварительная стоимость</span><strong>После замера</strong></div><button type="button" data-lead="quote">Получить расчёт →</button></div>
-          <button class="secondary-measure" type="button" data-lead="measure">⌁ Бесплатный замер</button>
+        <section id="solutionCard" class="solution-card">
+          <div class="solution-top">
+            <div>
+              <span>Итоговое решение</span>
+              <h3 id="solutionTitle">Ваше окно</h3>
+              <p id="solutionMeta"></p>
+            </div>
+            <button type="button" data-go-step="0">Изменить</button>
+          </div>
+          <div id="solutionChips" class="solution-chips"></div>
+          <div id="solutionSystem" class="solution-system"></div>
+          <div class="quote-row">
+            <button class="quote" type="button" data-lead="quote">Получить расчёт →</button>
+            <button class="measure" type="button" data-lead="measure">Бесплатный замер</button>
+          </div>
+        </section>
+
+        <section class="options-card">
+          <div class="options-head">
+            <div>
+              <h3>Дополнительные опции <button type="button" class="info-dot" data-help="extras" aria-label="О дополнительных опциях">i</button></h3>
+              <p>Только подоконник и москитная сетка — если они подходят выбранной конструкции.</p>
+            </div>
+          </div>
+          <div id="rightExtras" class="right-extras"></div>
         </section>
 
         <section class="trust-card" aria-label="Преимущества">
@@ -69,27 +109,35 @@
         </section>
       </aside>
     </section>
-
-    <section class="mobile-only" id="mobileConfigurator">
-      <div class="mobile-preview">
-        <div class="mobile-preview-head"><strong>Ваше окно</strong><button type="button" data-lead="measure">Не знаю размеры</button></div>
-        <div id="mobilePreviewCanvas" class="mobile-preview-canvas"></div>
-        <div id="mobileSummary" class="mobile-summary"></div>
-      </div>
-      <nav id="mobileProgress" class="mobile-progress" aria-label="Шаги конфигуратора"></nav>
-      <div id="mobileEditor" class="mobile-editor" aria-live="polite"></div>
-      <div class="mobile-bottom"><button id="mobilePrev" class="mobile-prev" type="button">← Назад</button><button id="mobileNext" class="mobile-next" type="button">Далее →</button></div>
-    </section>
   </main>
 
-  <dialog id="helpDialog" class="help-dialog"><div class="dialog-body"><button class="dialog-close" type="button" onclick="this.closest('dialog').close()">×</button><h3 id="helpTitle">Подсказка</h3><p id="helpText"></p></div></dialog>
+  <dialog id="helpDialog" class="help-dialog">
+    <div class="dialog-body">
+      <button class="dialog-close" type="button" onclick="this.closest('dialog').close()" aria-label="Закрыть">×</button>
+      <h3 id="helpTitle">Подсказка</h3>
+      <p id="helpText"></p>
+    </div>
+  </dialog>
 
-  <dialog id="leadDialog" class="lead-dialog"><div class="dialog-body"><button class="dialog-close" type="button" onclick="this.closest('dialog').close()">×</button><h3 id="leadTitle">Получить расчёт</h3><p>Оставьте контакты — специалист уточнит детали и свяжется с вами.</p><form id="leadForm" class="lead-form"><label>Имя<input name="name" autocomplete="name" placeholder="Ваше имя"></label><label>Телефон<input name="phone" type="tel" autocomplete="tel" placeholder="+7 ___ ___-__-__" required></label><label>Комментарий<textarea name="comment" rows="3" placeholder="Если есть важные детали"></textarea></label><input id="leadSummary" type="hidden" name="configuration"><button class="lead-submit" type="submit">Отправить</button></form></div></dialog>
+  <dialog id="leadDialog" class="lead-dialog">
+    <div class="dialog-body">
+      <button class="dialog-close" type="button" onclick="this.closest('dialog').close()" aria-label="Закрыть">×</button>
+      <h3 id="leadTitle">Получить расчёт</h3>
+      <p>Оставьте контакты — специалист уточнит детали и свяжется с вами.</p>
+      <form id="leadForm" class="lead-form">
+        <label>Имя<input name="name" autocomplete="name" placeholder="Ваше имя"></label>
+        <label>Телефон<input name="phone" type="tel" autocomplete="tel" placeholder="+7 ___ ___-__-__" required></label>
+        <label>Комментарий<textarea name="comment" rows="3" placeholder="Если есть важные детали"></textarea></label>
+        <input id="leadSummary" type="hidden" name="configuration">
+        <button class="lead-submit" type="submit">Отправить</button>
+      </form>
+    </div>
+  </dialog>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
   <script src="data.js"></script>
   <script src="core-v2.js"></script>
-  <script src="ui-v4.js"></script>
+  <script src="ui-v5.js"></script>
 </body>
 </html>
