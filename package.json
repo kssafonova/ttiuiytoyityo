@@ -1,9 +1,9 @@
 {
   "name": "lumi-configurator",
   "private": true,
-  "version": "4.0.0",
+  "version": "5.0.0",
   "scripts": {
     "test": "node --test tests/rules.test.cjs",
-    "check": "node --check data.js && node --check core-v2.js && node --check ui-v4.js"
+    "check": "node --check data.js && node --check core-v2.js && node --check ui-v5.js"
   }
 }
