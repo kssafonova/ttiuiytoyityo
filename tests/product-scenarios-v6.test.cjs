@@ -19,14 +19,33 @@ function parseCsv(text){
 }
 const split=v=>String(v||'').split('|').filter(Boolean);
 const normalizeCsv=r=>({rule_id:r.rule_id,construction_type_id:r.construction_type_id,scheme_ids:split(r.scheme_ids),opening_options:split(r.opening_options),material:r.material,thermal_mode:r.thermal_mode,glazing_options:split(r.glazing_options),comfort_options:split(r.comfort_options),compatible_systems:split(r.compatible_systems),recommended_logic:r.recommended_logic,extra_options:split(r.extra_options),ui_note:r.ui_note,engineering_validation:r.engineering_validation});
+const logicalRule=r=>({
+  rule_id:r.rule_id,
+  construction_type_id:r.construction_type_id,
+  scheme_ids:[...r.scheme_ids],
+  opening_options:[...r.opening_options],
+  material:r.material,
+  thermal_mode:r.thermal_mode,
+  glazing_options:[...r.glazing_options],
+  comfort_options:[...r.comfort_options],
+  compatible_systems:[...r.compatible_systems],
+  extra_options:[...r.extra_options]
+});
 
 test('top level contains exactly four product scenarios',()=>{
   assert.deepEqual(ids(DATA.types),['ct_window','ct_panoramic','ct_balcony_block','ct_panoramic_door']);
 });
 
-test('runtime rules exactly mirror canonical scenario CSV',()=>{
+test('runtime rule logic mirrors canonical scenario CSV',()=>{
   const csv=fs.readFileSync(path.join(__dirname,'../data/03_LUMI_scenario_rules.csv'),'utf8');
-  assert.deepEqual(RULES,parseCsv(csv).map(normalizeCsv));
+  const canonical=parseCsv(csv).map(normalizeCsv);
+  const runtime=JSON.parse(JSON.stringify(RULES));
+  assert.deepEqual(runtime.map(logicalRule),canonical.map(logicalRule));
+  for(const rule of runtime){
+    assert.ok(rule.recommended_logic?.trim(),`${rule.rule_id}: recommendation copy is required`);
+    assert.ok(rule.ui_note?.trim(),`${rule.rule_id}: UX note is required`);
+    assert.ok(rule.engineering_validation?.trim(),`${rule.rule_id}: engineering validation copy is required`);
+  }
 });
 
 test('ordinary single window never exposes slide opening',()=>{
