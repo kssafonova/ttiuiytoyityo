@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { createEngine } = require('../core-v2.js');
+const { createEngine } = require('../core-v3.js');
 const ids = list => list.map(x=>x.id);
 
 test('default PVC scenario recommends GRAZIO as balanced choice', () => {
