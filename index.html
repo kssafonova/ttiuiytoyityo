@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#f7f9fc" />
+  <title>LUMI — конфигуратор окон и раздвижных систем</title>
+  <meta name="description" content="Интерактивный конфигуратор LUMI: тип конструкции, схема, открывание, материал, стеклопакет, комфорт и подбор совместимых систем REHAU / ALUMARK." />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="LUMI">
+      <span class="brand-mark">LUMI</span>
+      <span class="brand-sub">Окна и раздвижные системы<br>для современной архитектуры</span>
+    </a>
+    <nav class="desktop-nav" aria-label="Основная навигация">
+      <a href="#configurator">Конфигуратор</a>
+      <a href="#systems">Системы</a>
+      <a href="#services">Услуги</a>
+      <a href="#about">О компании</a>
+    </nav>
+    <div class="header-actions">
+      <button class="location-btn" type="button">Москва <span aria-hidden="true">⌄</span></button>
+      <a class="phone" href="tel:+74952557788">+7 (495) 255-77-88<span>Ежедневно 9:00–21:00</span></a>
+      <button class="btn btn-dark btn-small" data-open-lead="callback">Заказать звонок</button>
+      <button class="mobile-menu" aria-label="Меню" type="button">☰</button>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero" id="configurator">
+      <div class="hero-copy">
+        <p class="eyebrow">КОНФИГУРАТОР LUMI</p>
+        <h1>Соберите подходящее окно без сложных терминов</h1>
+        <p>Выберите конструкцию и задачи. Мы автоматически покажем только совместимые REHAU и ALUMARK.</p>
+      </div>
+      <div class="hero-benefits" aria-label="Преимущества">
+        <span>⌖ Бесплатный замер</span>
+        <span>⚙ Изготовление от 7 дней</span>
+        <span>⬡ Гарантия 10 лет</span>
+      </div>
+    </section>
+
+    <section class="config-shell">
+      <aside class="step-rail" aria-label="Этапы конфигуратора">
+        <div class="step-rail-title">Конфигуратор</div>
+        <div id="railSteps"></div>
+        <div class="rail-help">
+          <strong>Нужна помощь?</strong>
+          <span>Подскажем, какой вариант подойдёт.</span>
+          <button class="link-btn" data-open-lead="consultation">Получить консультацию</button>
+        </div>
+      </aside>
+
+      <section class="config-panel" aria-live="polite">
+        <div class="config-head">
+          <div>
+            <h2 id="activeStepTitle">Тип конструкции</h2>
+            <p id="activeStepSubtitle">Выберите, что именно нужно установить.</p>
+          </div>
+          <button class="reset-btn" id="resetBtn" type="button">↻ Сбросить</button>
+        </div>
+
+        <div class="persistent-size" id="sizeBar">
+          <div class="size-label">
+            <span class="size-index">↔</span>
+            <div><strong>Размеры</strong><span>Можно изменить в любой момент</span></div>
+          </div>
+          <label>Ширина, мм <input id="widthInput" type="number" value="1400" inputmode="numeric" min="300" max="9000" step="10" /></label>
+          <label>Высота, мм <input id="heightInput" type="number" value="1500" inputmode="numeric" min="300" max="4000" step="10" /></label>
+          <button class="measure-link" data-open-lead="measure" type="button">Не знаю размеры →</button>
+        </div>
+
+        <div id="stepContent" class="step-content"></div>
+
+        <div class="config-navigation">
+          <button id="prevBtn" class="btn btn-ghost" type="button">← Назад</button>
+          <div class="step-progress"><span id="progressText">1 из 7</span><div class="progress-track"><i id="progressFill"></i></div></div>
+          <button id="nextBtn" class="btn btn-dark" type="button">Далее →</button>
+        </div>
+      </section>
+
+      <aside class="preview-panel">
+        <div class="preview-toolbar">
+          <div class="segmented" role="tablist" aria-label="Вид окна">
+            <button class="is-active" type="button" data-view="inside">Вид изнутри</button>
+            <button type="button" data-view="outside">Вид снаружи</button>
+            <button type="button" data-view="scheme">Схема</button>
+          </div>
+          <button id="fullscreenPreview" class="icon-btn" type="button" aria-label="Увеличить">⛶</button>
+        </div>
+        <div id="livePreview" class="live-preview"></div>
+        <div class="preview-caption">Предварительный вид. Финальная геометрия подтверждается после замера.</div>
+
+        <div class="summary-card">
+          <div class="summary-head"><h3>Ваше решение</h3><button id="editCurrent" class="link-btn">Изменить</button></div>
+          <div id="summaryList" class="summary-list"></div>
+          <div id="recommendation" class="recommendation"></div>
+        </div>
+
+        <div class="quote-card">
+          <div>
+            <span>Предварительный расчёт</span>
+            <strong id="quoteValue">После замера</strong>
+            <small>Точная стоимость зависит от размеров, выбранной системы и комплектации.</small>
+          </div>
+          <button class="btn btn-primary" data-open-lead="quote">Получить расчёт →</button>
+          <button class="btn btn-soft" data-open-lead="measure">⌖ Вызвать замерщика</button>
+        </div>
+      </aside>
+    </section>
+
+    <section class="trust-row" id="services">
+      <div><b>⌖</b><span>Бесплатный замер</span></div>
+      <div><b>⚙</b><span>Изготовление от 7 дней</span></div>
+      <div><b>▣</b><span>Доставка</span></div>
+      <div><b>◇</b><span>Монтаж</span></div>
+      <div><b>⬡</b><span>Гарантия 10 лет</span></div>
+    </section>
+
+    <section class="systems-strip" id="systems">
+      <div class="section-heading">
+        <p class="eyebrow">СИСТЕМЫ</p>
+        <h2>REHAU и ALUMARK — только совместимые варианты</h2>
+        <p>Технические характеристики доступны по кнопке «Подробнее», но не мешают основному выбору.</p>
+      </div>
+      <div id="systemCatalog" class="system-catalog"></div>
+    </section>
+
+    <section id="about" class="about-block">
+      <div><p class="eyebrow">LUMI</p><h2>Простой выбор — технически корректный результат</h2></div>
+      <p>Конфигуратор не заставляет разбираться в профилях, камерах и формулах стеклопакетов. Сначала пользователь описывает задачу, затем система фильтрует доступные решения и показывает понятные рекомендации.</p>
+    </section>
+  </main>
+
+  <div class="mobile-sticky" id="mobileSticky">
+    <div><span>Ваш вариант</span><strong id="mobileStickyText">Двухстворчатое · ПВХ</strong></div>
+    <button class="btn btn-primary btn-small" data-open-lead="quote">Расчёт</button>
+  </div>
+
+  <dialog id="leadDialog" class="lead-dialog">
+    <form method="dialog" class="lead-form">
+      <button class="dialog-close" value="cancel" aria-label="Закрыть">×</button>
+      <p class="eyebrow">LUMI</p>
+      <h2 id="leadTitle">Получить расчёт</h2>
+      <p id="leadText">Оставьте контакты — мы уточним детали и свяжемся с вами.</p>
+      <label>Имя<input type="text" name="name" placeholder="Ваше имя" /></label>
+      <label>Телефон<input type="tel" name="phone" placeholder="+7 ___ ___-__-__" required /></label>
+      <textarea name="comment" rows="3" placeholder="Комментарий"></textarea>
+      <button class="btn btn-primary" value="submit">Отправить</button>
+      <small>Прототип интерфейса: форма не отправляет данные на сервер.</small>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
