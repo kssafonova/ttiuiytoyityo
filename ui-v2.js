@@ -1,0 +1,98 @@
+(() => {
+  'use strict';
+  const D = window.LUMI;
+  const DATA = D.DATA;
+  const state = D.state;
+  const $ = (s,r=document) => r.querySelector(s);
+  const $$ = (s,r=document) => [...r.querySelectorAll(s)];
+  const STORAGE_KEY = 'lumi-configurator:v2';
+
+  const sprite = id => `<svg viewBox="0 0 160 110" aria-hidden="true"><use href="assets/sprite.svg#${id}"></use></svg>`;
+  const esc = value => String(value ?? '').replace(/[&<>'"]/g, ch=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]));
+
+  function persist(){ try { localStorage.setItem(STORAGE_KEY, JSON.stringify(D.snapshot())); } catch (_) {} }
+  function restore(){ try { const raw = localStorage.getItem(STORAGE_KEY); if (raw) D.hydrate(JSON.parse(raw)); } catch (_) {} }
+  function act(action, {renderAll=true}={}){ D.dispatch(action); persist(); renderAll ? render() : renderDerived(); }
+
+  function optionCard(item, selected, action, category, compact=false){
+    return `<button class="option-card ${compact?'compact':''} ${selected?'is-selected':''}" type="button" data-action="${action}" data-value="${esc(item.id)}">
+      <span class="check">✓</span>${sprite(`${category}__${item.id}`)}<strong>${esc(item.name)}</strong><small>${esc(item.desc || item.short || '')}</small>
+    </button>`;
+  }
+
+  function renderRail(){
+    $('#railSteps').innerHTML = DATA.stepMeta.map((step,i)=>{
+      const active=i===state.step, done=i<state.step, marker=step.result?'↳':(done?'✓':step.progress);
+      return `<button type="button" class="rail-step ${active?'is-active':''} ${done?'is-done':''}" data-go-step="${i}" ${active?'aria-current="step"':''}><i>${marker}</i><span>${esc(step.title)}</span></button>`;
+    }).join('');
+  }
+
+  const renderType=()=>`<div class="option-grid">${DATA.types.map(x=>optionCard(x,state.type===x.id,'select-type','type')).join('')}</div><div class="info-line">ⓘ Сначала выбирается формат конструкции. Материал, профиль и стеклопакет подбираются позже.</div>`;
+  const renderScheme=()=>`<div class="option-grid">${D.schemesForType().map(x=>optionCard(x,state.scheme===x.id,'select-scheme','scheme')).join('')}</div><div class="info-line">Схема определяет количество секций и их расположение. Открывание каждой доступной секции настраивается следующим шагом.</div>`;
+
+  function roleLabel(role){return({window:'Оконная секция',transom:'Фрамуга',balcony_door:'Балконная дверь',entrance_door:'Входная дверь',portal:'Активная портальная створка',portal_fixed:'Глухая секция портала'})[role]||'Секция';}
+  function renderOpening(){
+    const rows=state.sectionOpenings.map((sec,i)=>{
+      const options=D.allowedOpeningsForSection(sec).map(id=>DATA.openingOptions.find(x=>x.id===id)).filter(Boolean);
+      return `<div class="sash-row"><div><strong>${esc(sec.label)}</strong><small style="display:block;color:var(--muted);margin-top:3px">${roleLabel(sec.role)}</small></div><div class="pill-group">${options.map(op=>`<button type="button" class="pill ${sec.opening===op.id?'is-selected':''}" data-action="select-opening" data-index="${i}" data-value="${op.id}">${esc(op.name)}<span class="pill-sub">${esc(op.short)}</span></button>`).join('')}${options.length===1?'<span class="auto-inline">Определено схемой</span>':''}</div></div>`;
+    }).join('');
+    return `<div class="sash-config">${rows}</div><div class="info-line">ⓘ Открывание относится к конкретной створке. Для PSK и подъёмно-сдвижных порталов механизм задаётся самой схемой.</div>`;
+  }
+
+  function renderMaterial(){
+    const list=D.allowedMaterials(), modes=D.availableThermalModes();
+    const mode=state.material==='mat_aluminum'?(D.supportsColdAndWarm()?`<div class="mode-toggle" aria-label="Тип алюминиевого остекления"><button type="button" class="${state.thermalMode==='mode_warm'?'is-active':''}" data-action="select-thermal" data-value="mode_warm">Тёплое остекление</button><button type="button" class="${state.thermalMode==='mode_cold'?'is-active':''}" data-action="select-thermal" data-value="mode_cold">Холодное остекление</button></div>`:`<div class="auto-choice"><strong>${modes[0]==='mode_warm'?'Тёплое остекление':'Холодное остекление'}</strong><span>Тип остекления определён выбранной конструкцией.</span></div>`):'';
+    return `${list.length===1?`<div class="auto-choice"><strong>${esc(list[0].name)}</strong><span>Материал определён выбранной схемой и не требует отдельного решения.</span></div>`:''}<div class="option-grid ${list.length===2?'two':''}">${list.map(x=>optionCard(x,state.material===x.id,'select-material','material')).join('')}</div>${mode}${state.material==='mat_aluminum'&&state.thermalMode==='mode_cold'?'<div class="info-line">❄ Холодная система подходит для зон, где не требуется теплоизоляция. Для отапливаемого помещения выбирайте тёплое остекление.</div>':''}`;
+  }
+
+  function renderGlazing(){
+    const list=D.allowedGlazing(); $('#activeStepTitle').textContent=list.some(x=>x.id==='gl_single_glass')?'Стекло / стеклопакет':'Стеклопакет';
+    return `<div class="option-grid ${list.length===2?'two':''}">${list.map(x=>optionCard(x,state.glazing===x.id,'select-glazing','glazing')).join('')}</div><div class="info-line">ⓘ «Камеры профиля» и «камеры стеклопакета» — разные вещи. Например, GRAZIO имеет 5 камер профиля, а стеклопакет выбирается отдельно.</div>`;
+  }
+  const renderComfort=()=>`<div class="comfort-grid">${D.allowedComfort().map(x=>optionCard(x,state.comfort===x.id,'select-comfort','comfort',true)).join('')}</div><div class="info-line">ⓘ Необязательный шаг. Вы выбираете одну понятную задачу, а точную формулу стекла подбирает специалист с учётом профильной системы.</div>`;
+
+  function renderSystemDetails(s){return `<details class="system-details"><summary>Характеристики</summary><div class="details-grid"><span><b>Глубина</b>${esc(s.depth)}</span><span><b>Профиль</b>${esc(s.detail)}</span><span><b>Заполнение</b>${esc(s.filling)}</span><span><b>Теплотехника</b>${esc(s.thermal)}</span><span><b>Шумоизоляция</b>${esc(s.acoustic)}</span></div></details>`;}
+  function renderSystems(){
+    const ranked=D.rankedSystems(); if(!ranked.length)return `<div class="empty-state"><strong>Нет совместимого решения в текущем ассортименте</strong><p>Измените схему, материал или оставьте заявку на инженерную консультацию.</p></div>`;
+    const recId=ranked[0].system.id;
+    const cards=ranked.map(({system:s})=>`<article class="system-card ${s.id===recId?'is-recommended':''}">${sprite(`system__${s.id}`)}<div><div class="system-title-line"><span class="badge">${s.id===recId?'Рекомендуем':esc(s.tag)}</span>${state.system===s.id&&state.systemSelectionMode==='manual'?'<span class="manual-badge">Ваш выбор</span>':''}</div><h4>${esc(s.name)}</h4><p>${esc(s.desc)}</p><div class="system-meta"><span class="meta-chip">${esc(s.depth)}</span><span class="meta-chip">${esc(s.detail)}</span><span class="meta-chip">${esc(s.filling)}</span></div>${renderSystemDetails(s)}</div><div class="system-actions"><button type="button" class="details-btn" data-action="select-system" data-value="${s.id}">${state.system===s.id?'Выбрано ✓':'Выбрать'}</button></div></article>`).join('');
+    const selected=D.currentSystem();
+    return `<div class="result-kicker">Подбор выполнен автоматически по конструкции, механизму, материалу и выбранному комфорту.</div><div class="system-results">${cards}</div><div class="recommendation recommendation-wide"><strong>${esc(selected?.name||'Подбор системы')}</strong>${esc(D.explainRecommendation(selected?.id))}</div>${state.systemSelectionMode==='manual'?'<button type="button" class="link-btn auto-reset" data-action="auto-system">Вернуть автоматическую рекомендацию</button>':''}<div class="info-line">ⓘ Мы не используем размеры как жёсткий фильтр без паспортных ограничений производителя. Финальные Ш×В, статический расчёт, вес створок и формула стеклопакета проверяются инженером.</div>`;
+  }
+  const renderExtras=()=>`<div class="extra-grid">${D.allowedExtras().map(x=>`<button type="button" class="extra-card ${state.extras.has(x.id)?'is-selected':''}" data-action="toggle-extra" data-value="${x.id}">${sprite(`extra__${x.id}`)}<div><strong>${esc(x.name)}</strong><small>${esc(x.price)} · ${esc(x.desc)}</small></div><span class="switch"></span></button>`).join('')}</div><div class="info-line">ⓘ Нерелевантные опции скрываются автоматически. Бесплатный замер, срок изготовления и гарантия — не опции изделия.</div>`;
+
+  function renderIssues(){const issues=D.validationIssues().filter(x=>x.severity!=='info'||['systems','extras'].includes(D.currentStep().id));return issues.length?`<div class="issue-stack">${issues.map(i=>`<div class="issue issue-${i.severity}">${i.severity==='error'?'!':'i'} <span>${esc(i.message)}</span></div>`).join('')}</div>`:'';}
+  function renderStepContent(){const step=D.currentStep();$('#activeStepTitle').textContent=step.title;$('#activeStepSubtitle').textContent=step.subtitle;const views={type:renderType,scheme:renderScheme,opening:renderOpening,material:renderMaterial,glazing:renderGlazing,comfort:renderComfort,systems:renderSystems,extras:renderExtras};$('#stepContent').innerHTML=`${views[step.id]()}${renderIssues()}`;}
+
+  function geometry(){const scheme=D.currentScheme(),maxW=390,maxH=(state.type==='ct_entrance'||state.type==='ct_balcony_block')?282:244,aspect=Math.max(.45,Math.min(4.2,state.width/state.height));let w=Math.min(maxW,maxH*aspect),h=Math.min(maxH,maxW/aspect);w=Math.max(205,w);h=Math.max(145,h);return{scheme,w,h,x:(590-w)/2,y:64+(282-h)/2};}
+  function glassTint(){if(['cf_solar','cf_yearround'].includes(state.comfort))return'#afc2cf';if(state.comfort==='cf_crystal')return'#e8fbff';return'#cfe8f4';}
+  function openingGlyph(o,x,y,w,h){const s='#1e6fe8';if(o==='op_turn')return`<path d="M${x+8} ${y+8} L${x+w-14} ${y+h/2} L${x+8} ${y+h-8}" fill="none" stroke="${s}" stroke-width="3"/>`;if(o==='op_tilt_turn')return`<path d="M${x+8} ${y+8} L${x+w-14} ${y+h/2} L${x+8} ${y+h-8} M${x+8} ${y+8} L${x+w/2} ${y+28} L${x+w-8} ${y+8}" fill="none" stroke="${s}" stroke-width="3"/>`;if(o==='op_tilt')return`<path d="M${x+8} ${y+8} L${x+w/2} ${y+30} L${x+w-8} ${y+8}" fill="none" stroke="${s}" stroke-width="3"/>`;if(['op_psk','op_lift_slide'].includes(o))return`<path d="M${x+18} ${y+h/2} H${x+w-22} M${x+w-34} ${y+h/2-9} L${x+w-22} ${y+h/2} L${x+w-34} ${y+h/2+9}" fill="none" stroke="${s}" stroke-width="4"/>`;return'';}
+  function panelMarkup(sec,x,y,w,h,frame,inner){const inset=8,handle=sec.opening!=='op_fixed'&&!['op_psk','op_lift_slide'].includes(sec.opening)?`<rect x="${x+w-15}" y="${y+h/2-14}" width="4" height="28" rx="2" fill="#667382"/>`:'';return`<g><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="2" fill="${frame}"/><rect x="${x+inset}" y="${y+inset}" width="${Math.max(10,w-inset*2)}" height="${Math.max(10,h-inset*2)}" fill="${glassTint()}" opacity=".78" stroke="${inner}" stroke-width="2"/>${openingGlyph(sec.opening,x,y,w,h)}${handle}</g>`;}
+  function renderPanels(){const{scheme,w,h,x,y}=geometry(),frame=state.material==='mat_pvc'?'#f7f8f8':'#4f5963',inner=state.material==='mat_pvc'?'#dce4e8':'#222d36',secs=state.sectionOpenings,gap=7;if(scheme.layout==='transom'&&secs.length===2){const topH=Math.max(45,h*(secs[1].ratio||.22)),mainH=h-topH-gap;return panelMarkup(secs[1],x,y,w,topH,frame,inner)+panelMarkup(secs[0],x,y+topH+gap,w,mainH,frame,inner);}if(scheme.layout==='corner_l'&&state.view==='scheme')return`<g transform="translate(${x+20} ${y+20})"><polygon points="0,20 ${w*.56},0 ${w*.56},${h*.78} 0,${h}" fill="${frame}"/><polygon points="${w*.56},0 ${w},24 ${w},${h} ${w*.56},${h*.78}" fill="${frame}"/><path d="M12 28 L${w*.52} 12 L${w*.52} ${h*.72} L12 ${h-10} Z M${w*.60} 13 L${w-12} 32 L${w-12} ${h-12} L${w*.60} ${h*.72} Z" fill="${glassTint()}" stroke="${inner}" stroke-width="2"/></g>`;if(scheme.layout==='corner_u'&&state.view==='scheme')return`<g transform="translate(${x+10} ${y+18})"><polygon points="0,35 ${w*.18},15 ${w*.18},${h*.82} 0,${h}" fill="${frame}"/><rect x="${w*.18}" y="15" width="${w*.64}" height="${h*.67}" fill="${frame}"/><polygon points="${w*.82},15 ${w},35 ${w},${h} ${w*.82},${h*.82}" fill="${frame}"/><rect x="${w*.22}" y="24" width="${w*.56}" height="${h*.58}" fill="${glassTint()}" stroke="${inner}" stroke-width="2"/></g>`;const total=secs.reduce((s,x)=>s+(x.ratio||1),0)||1;let cursor=x;return secs.map(sec=>{const sw=(w-gap*(secs.length-1))*(sec.ratio||1)/total;let py=y,ph=h;if(state.type==='ct_balcony_block'&&sec.role==='window'){py=y+h*.23;ph=h*.77;}const m=panelMarkup(sec,cursor,py,sw,ph,frame,inner);cursor+=sw+gap;return m;}).join('');}
+  function previewSVG(){const{w,h,x,y,scheme}=geometry(),panels=renderPanels(),outside=state.view==='outside',scene=state.view==='scheme'?`<rect width="590" height="370" fill="#fbfcfe"/>`:`<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${outside?'#d6e7f1':'#c7e9fb'}"/><stop offset="1" stop-color="#eff7f2"/></linearGradient></defs><rect width="590" height="370" fill="${outside?'#e8edf2':'#f1eee9'}"/><rect x="64" y="28" width="462" height="312" rx="9" fill="#fff"/><rect x="${x+7}" y="${y+7}" width="${Math.max(20,w-14)}" height="${Math.max(20,h-14)}" fill="url(#sky)"/><path d="M90 260 C170 220 230 250 300 218 C375 184 438 230 505 204 L505 330 L90 330 Z" fill="#86a979" opacity=".68"/><g fill="#a8b9c8" opacity=".72"><rect x="170" y="168" width="22" height="70"/><rect x="205" y="135" width="28" height="103"/><rect x="355" y="150" width="31" height="88"/><rect x="402" y="177" width="18" height="61"/></g>`,dimY=Math.max(52,y-16),dimX=Math.max(70,x-17),layoutNote=['corner_l','corner_u'].includes(scheme.layout)?`<text x="295" y="348" text-anchor="middle" font-size="10" fill="#6d7890">${scheme.layout==='corner_l'?'Г-образная':'П-образная'} схема показана условно</text>`:'';return`<svg viewBox="0 0 590 370" role="img" aria-label="Предпросмотр выбранной конструкции">${scene}${panels}<g fill="#14213a" font-family="Inter,Arial"><text x="22" y="25" font-size="12" font-weight="700">${esc(D.currentSystem()?.name||'Автоподбор системы')}</text><text x="22" y="42" font-size="10" fill="#66738a">${esc(state.width)} × ${esc(state.height)} мм · ${esc(D.currentMaterial()?.short||'')}</text></g><g stroke="#2b7cff" fill="none" stroke-width="1.4"><path d="M${x} ${dimY} H${x+w}"/><path d="M${dimX} ${y} V${y+h}"/></g><g fill="#2b7cff" font-size="10" font-family="Inter,Arial"><text x="${x+w/2-22}" y="${dimY-5}">${esc(state.width)} мм</text><text transform="translate(${dimX-5},${y+h/2+22}) rotate(-90)">${esc(state.height)} мм</text></g>${layoutNote}</svg>`;}
+
+  const openingSummary=()=>state.sectionOpenings.map(sec=>`${sec.label}: ${DATA.openingOptions.find(x=>x.id===sec.opening)?.name||'—'}`).join(' · ');
+  function renderDerived(){
+    $('#livePreview').innerHTML=previewSVG();
+    const rows=[['Тип',D.currentType()?.name],['Схема',D.currentScheme()?.name],['Размеры',`${state.width} × ${state.height} мм`],['Открывание',openingSummary()],['Материал',D.currentMaterial()?.short],...(state.material==='mat_aluminum'?[['Остекление',state.thermalMode==='mode_cold'?'Холодное':'Тёплое']]:[]),['Стекло',D.currentGlazing()?.name],['Комфорт',state.comfort==='cf_none'?'Без доп. свойств':D.currentComfort()?.name],['Система',D.currentSystem()?.name||'—']];
+    $('#summaryList').innerHTML=rows.map(([a,b])=>`<dt>${esc(a)}</dt><dd>${esc(b||'—')}</dd>`).join('');
+    const selected=D.currentSystem(); $('#recommendation').innerHTML=selected?`<strong>${state.systemSelectionMode==='auto'?'Почему рекомендуем':'Выбрано'} ${esc(selected.name)}</strong>${esc(D.explainRecommendation(selected.id))}`:'<strong>Нужен инженерный расчёт</strong>В текущем ассортименте нет совместимой системы.';
+    $('#mobileStickyText').textContent=`${D.currentType()?.name||''} · ${D.currentMaterial()?.short||''}`; $('#quoteValue').textContent='После замера';
+  }
+  function renderNavigation(){const step=D.currentStep(),progress=step.progress||1;$('#progressText').textContent=`${progress} из 7`;$('#progressFill').style.width=`${Math.min(100,progress/7*100)}%`;$('#prevBtn').disabled=state.step===0;$('#prevBtn').style.opacity=state.step===0?'.4':'1';$('#nextBtn').disabled=!D.canProceed();$('#nextBtn').textContent=state.step===DATA.stepMeta.length-1?'Получить расчёт →':step.id==='systems'?'К комплектации →':'Далее →';}
+  function render(){D.normalizeState();renderRail();renderStepContent();renderDerived();renderNavigation();if(document.activeElement!==$('#widthInput'))$('#widthInput').value=state.width;if(document.activeElement!==$('#heightInput'))$('#heightInput').value=state.height;}
+  const scrollConfig=()=>{if(innerWidth<920)$('.config-panel').scrollIntoView({behavior:'smooth',block:'start'})};
+  function goNext(){if(!D.canProceed())return;if(state.step<DATA.stepMeta.length-1){act({type:'NEXT_STEP'});scrollConfig()}else openLead('quote')}
+  function goPrev(){if(state.step>0){act({type:'PREV_STEP'});scrollConfig()}}
+
+  $('#stepContent').addEventListener('click',e=>{const el=e.target.closest('[data-action]');if(!el)return;const value=el.dataset.value,action=el.dataset.action,map={'select-type':'SELECT_TYPE','select-scheme':'SELECT_SCHEME','select-material':'SELECT_MATERIAL','select-thermal':'SELECT_THERMAL','select-glazing':'SELECT_GLAZING','select-comfort':'SELECT_COMFORT','select-system':'SELECT_SYSTEM','toggle-extra':'TOGGLE_EXTRA','auto-system':'AUTO_SYSTEM'};if(action==='select-opening')act({type:'SELECT_OPENING',index:Number(el.dataset.index),value});else if(map[action])act({type:map[action],value});});
+  $('#railSteps').addEventListener('click',e=>{const el=e.target.closest('[data-go-step]');if(el){act({type:'SET_STEP',value:Number(el.dataset.goStep)});scrollConfig()}});
+  $('#prevBtn').onclick=goPrev;$('#nextBtn').onclick=goNext;$('#resetBtn').onclick=()=>{try{localStorage.removeItem(STORAGE_KEY)}catch(_){}act({type:'RESET'})};
+  function onDimension(field,value){D.dispatch({type:'SET_DIMENSION',field,value});persist();renderDerived();renderNavigation()}
+  $('#widthInput').addEventListener('input',e=>onDimension('width',e.target.value));$('#heightInput').addEventListener('input',e=>onDimension('height',e.target.value));
+  $$('.segmented button').forEach(b=>b.onclick=()=>{$$('.segmented button').forEach(x=>x.classList.remove('is-active'));b.classList.add('is-active');act({type:'SET_VIEW',value:b.dataset.view},{renderAll:false})});$('#fullscreenPreview').onclick=()=>$('#livePreview').requestFullscreen?.();$('#editCurrent').onclick=()=>{act({type:'SET_STEP',value:0});scrollConfig()};
+  const dialog=$('#leadDialog');function openLead(kind){const c={quote:['Получить расчёт','Оставьте контакты — специалист проверит размеры, конфигурацию и рассчитает стоимость.'],measure:['Бесплатный замер','Оставьте телефон — согласуем удобное время замера.'],callback:['Заказать звонок','Оставьте телефон — перезвоним в рабочее время.'],consultation:['Получить консультацию','Поможем выбрать конструкцию, материал и подходящую систему.']}[kind]||['Связаться с нами','Оставьте контакты.'];$('#leadTitle').textContent=c[0];$('#leadText').textContent=c[1];dialog.showModal()}
+  $$('[data-open-lead]').forEach(b=>b.onclick=()=>openLead(b.dataset.openLead));$('.lead-form').addEventListener('submit',e=>{e.preventDefault();dialog.close();const t=$('#toast');t.textContent='Спасибо! В прототипе заявка не отправляется.';t.classList.add('is-visible');setTimeout(()=>t.classList.remove('is-visible'),2800)});
+  $('#systemCatalog').innerHTML=DATA.systems.map(s=>`<article class="catalog-card">${sprite(`system__${s.id}`)}<strong>${esc(s.name)}</strong><span>${esc(s.tag)} · ${esc(s.depth)}<br>${esc(s.detail)}</span></article>`).join('');
+  restore(); render();
+})();
