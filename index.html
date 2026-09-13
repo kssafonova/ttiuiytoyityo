@@ -3,152 +3,93 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="theme-color" content="#f5f7fb" />
+  <meta name="theme-color" content="#f5f8fc" />
   <title>LUMI — конфигуратор окон и раздвижных систем</title>
-  <meta name="description" content="Конфигуратор LUMI: конструкция, материал, стекло, автоматический подбор REHAU / ALUMARK и комплектация." />
+  <meta name="description" content="Конфигуратор LUMI: конструкция, размеры, материал, стеклопакет, комфорт, система и комплектация." />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="styles-v3.css" />
   <link rel="stylesheet" href="styles-v4.css" />
 </head>
 <body>
-  <header class="topbar topbar-v4">
+  <header class="topbar">
     <a class="brand" href="#top" aria-label="LUMI">
       <span class="brand-mark">LUMI</span>
-      <span class="brand-rule" aria-hidden="true"></span>
       <span class="brand-sub">Окна и раздвижные системы<br>для современной архитектуры</span>
     </a>
-
-    <nav class="desktop-nav-v4" aria-label="Основная навигация">
+    <nav class="main-nav" aria-label="Основная навигация">
       <a href="#configurator">Продукция</a>
-      <a href="#services">Услуги</a>
-      <a href="#works">Наши работы</a>
-      <a href="#about">О компании</a>
-      <a href="#contacts">Контакты</a>
+      <a href="#configurator">Услуги</a>
+      <a href="#configurator">Наши работы</a>
+      <a href="#configurator">О компании</a>
+      <a href="#configurator">Контакты</a>
     </nav>
-
-    <div class="topbar-right">
-      <button class="location-v4" type="button" aria-label="Город">⌖ Москва</button>
-      <div class="topbar-meta"><span>Ежедневно 9:00–21:00</span><strong>+7 (495) 255-77-88</strong></div>
-      <button class="topbar-btn primary" type="button" data-lead="call">Заказать звонок</button>
+    <div class="top-actions">
+      <span class="location">Москва⌄</span>
+      <a class="phone" href="tel:+74952557788"><strong>+7 495 255-77-88</strong><span>Ежедневно с 9:00 до 21:00</span></a>
+      <button class="header-btn topbar-question" type="button" data-lead="call">Заказать звонок</button>
     </div>
   </header>
 
-  <main class="page page-v4" id="top">
-    <section class="intro intro-v4" id="configurator">
-      <div>
-        <p class="eyebrow">LUMI / CONFIGURATOR</p>
-        <h1>Конфигуратор окон</h1>
-        <p class="intro-lead">Соберите конструкцию под вашу задачу — технически несовместимые варианты мы исключим автоматически.</p>
-      </div>
-      <div class="intro-side-v4">
-        <span>4 понятных шага</span>
-        <span>живой предпросмотр</span>
-        <span>без инженерной анкеты</span>
-      </div>
+  <main class="page" id="top">
+    <section class="page-head desktop-only" id="configurator">
+      <div><h1>Конфигуратор окон</h1><p>Создайте окно под ваши задачи — несовместимые варианты система скроет сама.</p></div>
+      <button id="resetBtn" class="reset" type="button">↻ Сбросить всё</button>
     </section>
 
-    <nav class="macro-nav macro-nav-v4" id="macroNav" aria-label="Шаги конфигуратора"></nav>
+    <section class="desktop-shell desktop-only">
+      <div id="desktopEditor" class="desktop-editor" aria-live="polite"></div>
 
-    <section class="configurator configurator-v4" aria-label="Конфигуратор окон">
-      <section class="editor editor-v4" id="editor" aria-live="polite">
-        <header class="editor-head editor-head-v4">
-          <div class="editor-title">
-            <h2 id="activeTitle">Конструкция</h2>
-            <p id="activeSubtitle">Выберите формат окна, схему секций и как они будут открываться.</p>
-          </div>
-          <span class="step-count" id="stepCount">01 / 04</span>
-        </header>
-
-        <div class="editor-body" id="editorBody"></div>
-
-        <footer class="editor-actions editor-actions-v4">
-          <div class="action-left">
-            <button class="action-btn" id="prevBtn" type="button">← Назад</button>
-            <button class="action-btn subtle" id="resetBtn" type="button">Сбросить</button>
-          </div>
-          <div class="mini-progress" id="miniProgress" aria-hidden="true"></div>
-          <button class="action-btn next" id="nextBtn" type="button">Материал и стекло →</button>
-        </footer>
-      </section>
-
-      <aside class="preview preview-v4" aria-label="Предпросмотр и итог">
-        <div class="preview-stage preview-stage-v4" id="previewStage">
-          <div class="preview-top">
-            <div class="view-tabs" role="tablist" aria-label="Вид конструкции">
-              <button class="is-active" type="button" data-view="inside">Изнутри</button>
-              <button type="button" data-view="outside">Снаружи</button>
-              <button type="button" data-view="scheme">Схема</button>
+      <aside class="preview-column">
+        <section class="preview-card">
+          <div class="preview-stage">
+            <div class="preview-toolbar">
+              <div class="view-tabs" id="viewTabs" role="tablist" aria-label="Вид конструкции">
+                <button class="is-active" type="button" data-view="inside">Вид изнутри</button>
+                <button type="button" data-view="outside">Вид снаружи</button>
+                <button type="button" data-view="scheme">Схема</button>
+              </div>
             </div>
-            <div class="preview-tools">
-              <button class="icon-button" id="dimensionHelp" type="button" aria-label="О размерах" title="О размерах">i</button>
-              <button class="icon-button" id="fullscreenPreview" type="button" aria-label="Развернуть" title="Развернуть">↗</button>
-            </div>
+            <div class="window-canvas" id="windowCanvas"></div>
+            <div class="preview-caption">Предварительная визуализация. Финальная геометрия подтверждается после замера.</div>
           </div>
+        </section>
 
-          <div class="window-canvas" id="windowCanvas"></div>
-          <div class="preview-fineprint">Предварительная визуализация. Финальные размеры и геометрия подтверждаются после замера.</div>
+        <section class="summary-card">
+          <div class="summary-top"><div><h3 id="summaryTitle">Ваше окно</h3><p id="summarySub"></p></div><button type="button" onclick="document.getElementById('desktopEditor').scrollIntoView({behavior:'smooth'})">Изменить</button></div>
+          <div id="summaryChips" class="summary-chips"></div>
+          <div id="summarySystem" class="summary-system"></div>
+          <div class="quote-box"><div><span>Предварительная стоимость</span><strong>После замера</strong></div><button type="button" data-lead="quote">Получить расчёт →</button></div>
+          <button class="secondary-measure" type="button" data-lead="measure">⌁ Бесплатный замер</button>
+        </section>
 
-          <div class="dimension-dock dimension-dock-v4">
-            <div class="dim-field"><div><label for="widthInput">Ширина</label><input id="widthInput" type="number" min="1" step="10" inputmode="numeric" value="1400" /></div><span>мм</span></div>
-            <div class="dim-field"><div><label for="heightInput">Высота</label><input id="heightInput" type="number" min="1" step="10" inputmode="numeric" value="1500" /></div><span>мм</span></div>
-            <button class="measure-btn" type="button" data-lead="measure">Не знаю размеры</button>
-          </div>
-        </div>
-
-        <div class="preview-summary preview-summary-v4">
-          <span class="summary-kicker">Ваше окно</span>
-          <div class="summary-main">
-            <div><h3 id="summaryTitle">Двухстворчатое</h3><p id="summarySub">1400 × 1500 мм · ПВХ</p></div>
-            <button class="summary-edit" id="summaryEdit" type="button">Изменить</button>
-          </div>
-          <div class="summary-chips" id="summaryChips"></div>
-          <div class="summary-system" id="summarySystem"></div>
-          <div class="quote-actions">
-            <button class="quote-button" type="button" data-lead="quote">Получить расчёт →</button>
-            <button class="secondary-quote" type="button" data-lead="measure">Бесплатный замер</button>
-          </div>
-        </div>
+        <section class="trust-card" aria-label="Преимущества">
+          <div><b>⌁</b><span>Бесплатный<br>замер</span></div>
+          <div><b>⚙</b><span>Изготовление<br>от 7 дней</span></div>
+          <div><b>▣</b><span>Доставка<br>и монтаж</span></div>
+          <div><b>◇</b><span>Гарантия<br>10 лет</span></div>
+        </section>
       </aside>
     </section>
 
-    <section class="trust-strip-v4" id="services" aria-label="Преимущества">
-      <div><span>01</span><strong>Бесплатный замер</strong><small>Поможем уточнить размеры на объекте.</small></div>
-      <div><span>02</span><strong>Изготовление от 7 дней</strong><small>Срок зависит от системы и комплектации.</small></div>
-      <div><span>03</span><strong>Доставка и монтаж</strong><small>Комплексная установка конструкции.</small></div>
-      <div><span>04</span><strong>Гарантия до 10 лет</strong><small>Условия зависят от изделия и работ.</small></div>
+    <section class="mobile-only" id="mobileConfigurator">
+      <div class="mobile-preview">
+        <div class="mobile-preview-head"><strong>Ваше окно</strong><button type="button" data-lead="measure">Не знаю размеры</button></div>
+        <div id="mobilePreviewCanvas" class="mobile-preview-canvas"></div>
+        <div id="mobileSummary" class="mobile-summary"></div>
+      </div>
+      <nav id="mobileProgress" class="mobile-progress" aria-label="Шаги конфигуратора"></nav>
+      <div id="mobileEditor" class="mobile-editor" aria-live="polite"></div>
+      <div class="mobile-bottom"><button id="mobilePrev" class="mobile-prev" type="button">← Назад</button><button id="mobileNext" class="mobile-next" type="button">Далее →</button></div>
     </section>
   </main>
 
-  <dialog class="help-dialog" id="helpDialog">
-    <div class="dialog-inner">
-      <button class="dialog-close" type="button" onclick="this.closest('dialog').close()" aria-label="Закрыть">×</button>
-      <p class="eyebrow">ПОДСКАЗКА</p>
-      <h3 id="helpTitle">Что это значит?</h3>
-      <p id="helpText"></p>
-      <div class="help-points" id="helpPoints"></div>
-    </div>
-  </dialog>
+  <dialog id="helpDialog" class="help-dialog"><div class="dialog-body"><button class="dialog-close" type="button" onclick="this.closest('dialog').close()">×</button><h3 id="helpTitle">Подсказка</h3><p id="helpText"></p></div></dialog>
 
-  <dialog class="lead-dialog" id="leadDialog">
-    <div class="dialog-inner">
-      <button class="dialog-close" type="button" onclick="this.closest('dialog').close()" aria-label="Закрыть">×</button>
-      <p class="eyebrow">LUMI</p>
-      <h3 id="leadTitle">Получить расчёт</h3>
-      <p id="leadText">Оставьте контакты — мы уточним детали.</p>
-      <form class="lead-form" id="leadForm">
-        <label>Имя<input type="text" name="name" placeholder="Ваше имя" autocomplete="name" /></label>
-        <label>Телефон<input type="tel" name="phone" placeholder="+7 ___ ___-__-__" autocomplete="tel" required /></label>
-        <label>Комментарий<textarea name="comment" rows="3" placeholder="Если есть важные детали"></textarea></label>
-        <input type="hidden" id="leadSummary" name="configuration" />
-        <button class="lead-submit" type="submit">Отправить</button>
-      </form>
-    </div>
-  </dialog>
+  <dialog id="leadDialog" class="lead-dialog"><div class="dialog-body"><button class="dialog-close" type="button" onclick="this.closest('dialog').close()">×</button><h3 id="leadTitle">Получить расчёт</h3><p>Оставьте контакты — специалист уточнит детали и свяжется с вами.</p><form id="leadForm" class="lead-form"><label>Имя<input name="name" autocomplete="name" placeholder="Ваше имя"></label><label>Телефон<input name="phone" type="tel" autocomplete="tel" placeholder="+7 ___ ___-__-__" required></label><label>Комментарий<textarea name="comment" rows="3" placeholder="Если есть важные детали"></textarea></label><input id="leadSummary" type="hidden" name="configuration"><button class="lead-submit" type="submit">Отправить</button></form></div></dialog>
 
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
   <script src="data.js"></script>
   <script src="core-v2.js"></script>
-  <script src="ui-v3.js"></script>
+  <script src="ui-v4.js"></script>
 </body>
 </html>
