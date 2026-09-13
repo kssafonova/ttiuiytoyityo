@@ -3,45 +3,55 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="theme-color" content="#f4f3ef" />
+  <meta name="theme-color" content="#f5f7fb" />
   <title>LUMI — конфигуратор окон и раздвижных систем</title>
-  <meta name="description" content="Современный конфигуратор LUMI: конструкция, материал и стекло, автоматический подбор REHAU / ALUMARK и комплектация." />
+  <meta name="description" content="Конфигуратор LUMI: конструкция, материал, стекло, автоматический подбор REHAU / ALUMARK и комплектация." />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="styles-v3.css" />
+  <link rel="stylesheet" href="styles-v4.css" />
 </head>
 <body>
-  <header class="topbar">
+  <header class="topbar topbar-v4">
     <a class="brand" href="#top" aria-label="LUMI">
       <span class="brand-mark">LUMI</span>
       <span class="brand-rule" aria-hidden="true"></span>
-      <span class="brand-sub">Окна и раздвижные системы</span>
+      <span class="brand-sub">Окна и раздвижные системы<br>для современной архитектуры</span>
     </a>
+
+    <nav class="desktop-nav-v4" aria-label="Основная навигация">
+      <a href="#configurator">Продукция</a>
+      <a href="#services">Услуги</a>
+      <a href="#works">Наши работы</a>
+      <a href="#about">О компании</a>
+      <a href="#contacts">Контакты</a>
+    </nav>
+
     <div class="topbar-right">
-      <div class="topbar-meta"><span>Консультация</span><strong>+7 (495) 255-77-88</strong></div>
-      <button class="topbar-btn" type="button" data-lead="call">Задать вопрос</button>
-      <button class="topbar-btn primary" type="button" data-lead="measure">Бесплатный замер</button>
+      <button class="location-v4" type="button" aria-label="Город">⌖ Москва</button>
+      <div class="topbar-meta"><span>Ежедневно 9:00–21:00</span><strong>+7 (495) 255-77-88</strong></div>
+      <button class="topbar-btn primary" type="button" data-lead="call">Заказать звонок</button>
     </div>
   </header>
 
-  <main class="page" id="top">
-    <section class="intro">
+  <main class="page page-v4" id="top">
+    <section class="intro intro-v4" id="configurator">
       <div>
-        <p class="eyebrow">LUMI / CONFIGURE</p>
-        <h1>Окно, которое подходит вашему пространству.</h1>
+        <p class="eyebrow">LUMI / CONFIGURATOR</p>
+        <h1>Конфигуратор окон</h1>
+        <p class="intro-lead">Соберите конструкцию под вашу задачу — технически несовместимые варианты мы исключим автоматически.</p>
       </div>
-      <div class="intro-copy">
-        <p>Четыре понятных решения вместо длинной инженерной анкеты. Несовместимые варианты мы скрываем сами.</p>
-        <div class="benefit-line" aria-label="Преимущества">
-          <span>4 шага</span><span>без сложных терминов</span><span>REHAU + ALUMARK</span>
-        </div>
+      <div class="intro-side-v4">
+        <span>4 понятных шага</span>
+        <span>живой предпросмотр</span>
+        <span>без инженерной анкеты</span>
       </div>
     </section>
 
-    <nav class="macro-nav" id="macroNav" aria-label="Шаги конфигуратора"></nav>
+    <nav class="macro-nav macro-nav-v4" id="macroNav" aria-label="Шаги конфигуратора"></nav>
 
-    <section class="configurator" aria-label="Конфигуратор окон">
-      <section class="editor" id="editor" aria-live="polite">
-        <header class="editor-head">
+    <section class="configurator configurator-v4" aria-label="Конфигуратор окон">
+      <section class="editor editor-v4" id="editor" aria-live="polite">
+        <header class="editor-head editor-head-v4">
           <div class="editor-title">
             <h2 id="activeTitle">Конструкция</h2>
             <p id="activeSubtitle">Выберите формат окна, схему секций и как они будут открываться.</p>
@@ -51,18 +61,18 @@
 
         <div class="editor-body" id="editorBody"></div>
 
-        <footer class="editor-actions">
+        <footer class="editor-actions editor-actions-v4">
           <div class="action-left">
             <button class="action-btn" id="prevBtn" type="button">← Назад</button>
-            <button class="action-btn" id="resetBtn" type="button">Сбросить</button>
+            <button class="action-btn subtle" id="resetBtn" type="button">Сбросить</button>
           </div>
           <div class="mini-progress" id="miniProgress" aria-hidden="true"></div>
           <button class="action-btn next" id="nextBtn" type="button">Материал и стекло →</button>
         </footer>
       </section>
 
-      <aside class="preview" aria-label="Предпросмотр и итог">
-        <div class="preview-stage" id="previewStage">
+      <aside class="preview preview-v4" aria-label="Предпросмотр и итог">
+        <div class="preview-stage preview-stage-v4" id="previewStage">
           <div class="preview-top">
             <div class="view-tabs" role="tablist" aria-label="Вид конструкции">
               <button class="is-active" type="button" data-view="inside">Изнутри</button>
@@ -70,23 +80,23 @@
               <button type="button" data-view="scheme">Схема</button>
             </div>
             <div class="preview-tools">
-              <button class="icon-button" id="dimensionHelp" type="button" aria-label="О размерах">i</button>
-              <button class="icon-button" id="fullscreenPreview" type="button" aria-label="Развернуть">↗</button>
+              <button class="icon-button" id="dimensionHelp" type="button" aria-label="О размерах" title="О размерах">i</button>
+              <button class="icon-button" id="fullscreenPreview" type="button" aria-label="Развернуть" title="Развернуть">↗</button>
             </div>
           </div>
 
           <div class="window-canvas" id="windowCanvas"></div>
-          <div class="preview-fineprint">Визуализация помогает сравнивать варианты. Финальная геометрия подтверждается после замера.</div>
+          <div class="preview-fineprint">Предварительная визуализация. Финальные размеры и геометрия подтверждаются после замера.</div>
 
-          <div class="dimension-dock">
+          <div class="dimension-dock dimension-dock-v4">
             <div class="dim-field"><div><label for="widthInput">Ширина</label><input id="widthInput" type="number" min="1" step="10" inputmode="numeric" value="1400" /></div><span>мм</span></div>
             <div class="dim-field"><div><label for="heightInput">Высота</label><input id="heightInput" type="number" min="1" step="10" inputmode="numeric" value="1500" /></div><span>мм</span></div>
             <button class="measure-btn" type="button" data-lead="measure">Не знаю размеры</button>
           </div>
         </div>
 
-        <div class="preview-summary">
-          <span class="summary-kicker">Ваш вариант</span>
+        <div class="preview-summary preview-summary-v4">
+          <span class="summary-kicker">Ваше окно</span>
           <div class="summary-main">
             <div><h3 id="summaryTitle">Двухстворчатое</h3><p id="summarySub">1400 × 1500 мм · ПВХ</p></div>
             <button class="summary-edit" id="summaryEdit" type="button">Изменить</button>
@@ -94,11 +104,18 @@
           <div class="summary-chips" id="summaryChips"></div>
           <div class="summary-system" id="summarySystem"></div>
           <div class="quote-actions">
-            <button class="quote-button" type="button" data-lead="quote">Получить расчёт</button>
+            <button class="quote-button" type="button" data-lead="quote">Получить расчёт →</button>
             <button class="secondary-quote" type="button" data-lead="measure">Бесплатный замер</button>
           </div>
         </div>
       </aside>
+    </section>
+
+    <section class="trust-strip-v4" id="services" aria-label="Преимущества">
+      <div><span>01</span><strong>Бесплатный замер</strong><small>Поможем уточнить размеры на объекте.</small></div>
+      <div><span>02</span><strong>Изготовление от 7 дней</strong><small>Срок зависит от системы и комплектации.</small></div>
+      <div><span>03</span><strong>Доставка и монтаж</strong><small>Комплексная установка конструкции.</small></div>
+      <div><span>04</span><strong>Гарантия до 10 лет</strong><small>Условия зависят от изделия и работ.</small></div>
     </section>
   </main>
 
