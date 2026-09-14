@@ -1,0 +1,12 @@
+{
+  "id":"hs_portal_v2","name":"Подъёмно-сдвижная система / HS-портал","baseWidth":4.4,"baseHeight":2.55,
+  "outerFrame":{"w":4.4,"h":2.55,"t":0.11,"d":0.18},
+  "sections":[
+    {"index":0,"role":"portal","x":-1.08,"y":0,"w":2.03,"h":2.21,"t":0.065,"d":0.095,"hinge":"left","motion":"lift_slide","handleSide":1},
+    {"index":1,"role":"portal_fixed","x":1.08,"y":0,"w":2.03,"h":2.21,"t":0.065,"d":0.095,"hinge":"right","motion":"fixed","handleSide":-1}
+  ],
+  "staticParts":[
+    {"kind":"box","x":0,"y":0,"z":0,"w":0.08,"h":2.29,"d":0.17,"material":"frame"},
+    {"kind":"box","x":0,"y":-1.12,"z":0.02,"w":4.14,"h":0.055,"d":0.28,"material":"metal"}
+  ]
+}
