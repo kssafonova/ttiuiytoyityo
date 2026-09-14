@@ -1,0 +1,18 @@
+{
+  "id": "panoramic_window",
+  "name": "Панорамное окно",
+  "baseWidth": 3.55,
+  "baseHeight": 2.55,
+  "parts": [
+    {"kind":"frame","x":0,"y":0,"w":3.55,"h":2.55,"t":0.10,"d":0.16,"material":"frame"},
+    {"kind":"frame","x":-1.145,"y":0,"w":1.05,"h":2.19,"t":0.058,"d":0.085,"material":"frame"},
+    {"kind":"glass","x":-1.145,"y":0,"w":0.93,"h":2.19,"d":0.025,"material":"glass"},
+    {"kind":"box","x":-0.58,"y":0,"z":0,"w":0.075,"h":2.31,"d":0.15,"material":"frame"},
+    {"kind":"frame","x":0,"y":0,"w":1.05,"h":2.19,"t":0.058,"d":0.085,"material":"frame"},
+    {"kind":"glass","x":0,"y":0,"w":0.93,"h":2.19,"d":0.025,"material":"glass"},
+    {"kind":"box","x":0.58,"y":0,"z":0,"w":0.075,"h":2.31,"d":0.15,"material":"frame"},
+    {"kind":"frame","x":1.145,"y":0,"w":1.05,"h":2.19,"t":0.058,"d":0.085,"material":"frame"},
+    {"kind":"glass","x":1.145,"y":0,"w":0.93,"h":2.19,"d":0.025,"material":"glass"},
+    {"kind":"handle","x":-0.39,"y":0.01,"z":0.12,"side":1,"material":"metal"}
+  ]
+}
