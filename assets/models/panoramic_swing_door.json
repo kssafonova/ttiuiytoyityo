@@ -1,0 +1,10 @@
+{
+  "id":"panoramic_swing_door","name":"Распашная панорамная дверь","baseWidth":1.35,"baseHeight":2.45,
+  "outerFrame":{"w":1.35,"h":2.45,"t":0.10,"d":0.16},
+  "sections":[
+    {"index":0,"role":"entrance_door","x":0,"y":0,"w":1.10,"h":2.18,"t":0.065,"d":0.09,"hinge":"left","motion":"swing","handleSide":1}
+  ],
+  "staticParts":[
+    {"kind":"box","x":0,"y":-1.09,"z":0.01,"w":1.12,"h":0.045,"d":0.20,"material":"metal"}
+  ]
+}
