@@ -7,17 +7,64 @@
   <title>LUMI — конфигуратор окон и раздвижных систем</title>
   <meta name="description" content="Конфигуратор LUMI: четыре продуктовых сценария, три понятных шага и автоматический подбор совместимой системы." />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="styles-v4.css?v=13" />
-  <link rel="stylesheet" href="styles-v5.css?v=13" />
-  <link rel="stylesheet" href="styles-v6.css?v=13" />
-  <link rel="stylesheet" href="styles-v11.css?v=13" />
-  <link rel="stylesheet" href="styles-v12.css?v=13" />
-  <link rel="stylesheet" href="styles-v13.css?v=13" />
+  <link rel="stylesheet" href="styles-v4.css?v=14" />
+  <link rel="stylesheet" href="styles-v5.css?v=14" />
+  <link rel="stylesheet" href="styles-v6.css?v=14" />
+  <link rel="stylesheet" href="styles-v11.css?v=14" />
+  <link rel="stylesheet" href="styles-v12.css?v=14" />
+  <link rel="stylesheet" href="styles-v13.css?v=14" />
+  <link rel="stylesheet" href="styles-v14.css?v=14" />
 </head>
 <body>
   <header class="topbar">
     <a class="brand" href="#top" aria-label="LUMI"><span class="brand-mark">LUMI</span><span class="brand-sub">Окна и раздвижные системы<br>для современной архитектуры</span></a>
-    <nav class="main-nav" aria-label="Основная навигация"><a href="#configurator">Продукция</a><a href="#configurator">Услуги</a><a href="#configurator">Наши работы</a><a href="#configurator">О компании</a><a href="#configurator">Контакты</a></nav>
+
+    <nav class="main-nav" aria-label="Основная навигация">
+      <div class="nav-item">
+        <button class="nav-trigger" type="button">Окна</button>
+        <div class="nav-mega">
+          <strong>Окна</strong>
+          <ul>
+            <li><a href="#configurator">Пластиковые окна</a></li>
+            <li><a href="#configurator">Алюминиевые окна</a></li>
+          </ul>
+          <a class="nav-all" href="#configurator">Смотреть все</a>
+        </div>
+      </div>
+
+      <div class="nav-item is-wide">
+        <button class="nav-trigger" type="button">Раздвижные порталы</button>
+        <div class="nav-mega">
+          <strong>Раздвижные порталы</strong>
+          <ul>
+            <li><a href="#configurator">Подъёмно-сдвижные HS-порталы</a></li>
+            <li><a href="#configurator">Параллельно-сдвижные PSK-порталы</a></li>
+            <li><a href="#configurator">Алюминиевые раздвижные порталы</a></li>
+          </ul>
+          <a class="nav-all" href="#configurator">Смотреть все</a>
+        </div>
+      </div>
+
+      <div class="nav-item is-wide">
+        <button class="nav-trigger" type="button">Комплексное остекление</button>
+        <div class="nav-mega">
+          <strong>Комплексное остекление</strong>
+          <ul>
+            <li><a href="#configurator">Квартиры</a></li>
+            <li><a href="#configurator">Балконы и лоджии</a></li>
+            <li><a href="#configurator">Дома и коттеджи</a></li>
+            <li><a href="#configurator">Террасы и веранды</a></li>
+          </ul>
+          <a class="nav-all" href="#configurator">Смотреть все</a>
+        </div>
+      </div>
+
+      <a class="nav-link" href="#configurator">Проекты</a>
+      <a class="nav-link" href="#configurator">Контакты</a>
+      <a class="nav-link" href="#configurator">О компании</a>
+      <a class="nav-link" href="#configurator">Партнёры</a>
+    </nav>
+
     <div class="top-actions"><span class="location">Москва⌄</span><a class="phone" href="tel:+74952557788"><strong>+7 495 255-77-88</strong><span>Ежедневно с 9:00 до 21:00</span></a><button class="header-btn" type="button" data-lead="call">Заказать звонок</button></div>
   </header>
   <main class="page" id="top">
@@ -40,14 +87,14 @@
   <dialog id="helpDialog" class="help-dialog"><div class="dialog-body"><button class="dialog-close" type="button" onclick="this.closest('dialog').close()" aria-label="Закрыть">×</button><h3 id="helpTitle">Подсказка</h3><p id="helpText"></p></div></dialog>
   <dialog id="leadDialog" class="lead-dialog"><div class="dialog-body"><button class="dialog-close" type="button" onclick="this.closest('dialog').close()" aria-label="Закрыть">×</button><h3 id="leadTitle">Получить расчёт</h3><p>Оставьте контакты — специалист уточнит детали и свяжется с вами.</p><form id="leadForm" class="lead-form"><label>Имя<input name="name" autocomplete="name" placeholder="Ваше имя"></label><label>Телефон<input name="phone" type="tel" autocomplete="tel" placeholder="+7 ___ ___-__-__" required></label><label>Комментарий<textarea name="comment" rows="3" placeholder="Если есть важные детали"></textarea></label><input id="leadSummary" type="hidden" name="configuration"><button class="lead-submit" type="submit">Отправить</button></form></div></dialog>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="data-v3.js?v=13"></script>
-  <script src="scenario-rules-v2.js?v=13"></script>
-  <script src="core-v4.js?v=13"></script>
-  <script src="ui-v6.js?v=13"></script>
-  <script src="ui-v7.js?v=13"></script>
+  <script src="data-v3.js?v=14"></script>
+  <script src="scenario-rules-v2.js?v=14"></script>
+  <script src="core-v4.js?v=14"></script>
+  <script src="ui-v6.js?v=14"></script>
+  <script src="ui-v7.js?v=14"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="window-3d-model-spec-v5.js?v=13"></script>
-  <script src="window-3d-geometry-v5.js?v=13"></script>
-  <script src="window-3d-app-v5.js?v=13"></script>
+  <script src="window-3d-model-spec-v5.js?v=14"></script>
+  <script src="window-3d-geometry-v5.js?v=14"></script>
+  <script src="window-3d-app-v5.js?v=14"></script>
 </body>
 </html>
