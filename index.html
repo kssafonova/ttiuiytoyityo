@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="styles-v4.css" />
   <link rel="stylesheet" href="styles-v5.css" />
   <link rel="stylesheet" href="styles-v6.css" />
+  <link rel="stylesheet" href="styles-v7.css" />
 </head>
 <body>
   <header class="topbar">
@@ -27,7 +28,7 @@
         <footer class="config-actions"><button id="prevBtn" class="prev" type="button">← Назад</button><button id="nextBtn" class="next" type="button">Схема и открывание →</button></footer>
       </section>
       <aside class="result-column" aria-label="Итоговое решение">
-        <section class="preview-card"><div class="preview-stage"><div class="preview-toolbar"><div class="view-tabs" role="tablist" aria-label="Вид конструкции"><button class="is-active" type="button" data-view="inside">Изнутри</button><button type="button" data-view="outside">Снаружи</button><button type="button" data-view="scheme">Схема</button></div></div><div id="windowCanvas" class="window-canvas"></div><div class="preview-caption">Предварительная визуализация. Финальная геометрия и допустимые размеры подтверждаются после инженерной проверки.</div></div></section>
+        <section class="preview-card"><div class="preview-stage"><div class="preview-toolbar"><div class="view-tabs" role="tablist" aria-label="Вид конструкции"><button class="is-active" type="button" data-view="inside">Изнутри</button><button type="button" data-view="outside">Снаружи</button><button type="button" data-view="scheme">Схема</button><button type="button" data-view3d="true">3D</button></div></div><div id="windowCanvas" class="window-canvas"></div><div class="preview-caption">Предварительная визуализация. Финальная геометрия и допустимые размеры подтверждаются после инженерной проверки.</div></div></section>
         <section id="solutionCard" class="solution-card"><div class="solution-top"><div><span>Ваше решение</span><h3 id="solutionTitle">Обычное окно</h3><p id="solutionMeta"></p></div><button type="button" data-go-step="0">Изменить</button></div><div id="solutionChips" class="solution-chips"></div><div id="solutionSystem" class="solution-system"></div><div class="quote-row"><button class="quote" type="button" data-lead="quote">Получить расчёт →</button><button class="measure" type="button" data-lead="measure">Бесплатный замер</button></div></section>
         <section class="options-card"><div class="options-head"><div><h3>Дополнительные опции <button type="button" class="info-dot" data-help="extras" aria-label="О дополнительных опциях">i</button></h3><p>Подоконник и москитная сетка — только если подходят выбранной конструкции.</p></div></div><div id="rightExtras" class="right-extras"></div></section>
         <section class="trust-card" aria-label="Преимущества"><div><b>⌁</b><span>Бесплатный<br>замер</span></div><div><b>⚙</b><span>Изготовление<br>от 7 дней</span></div><div><b>▣</b><span>Доставка<br>и монтаж</span></div><div><b>◇</b><span>Гарантия<br>10 лет</span></div></section>
@@ -41,5 +42,6 @@
   <script src="scenario-rules-v2.js"></script>
   <script src="core-v4.js"></script>
   <script src="ui-v6.js"></script>
+  <script type="module" src="window-3d.js"></script>
 </body>
 </html>
