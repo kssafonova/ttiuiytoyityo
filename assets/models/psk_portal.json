@@ -1,0 +1,12 @@
+{
+  "id":"psk_portal","name":"Параллельно-сдвижная система / PSK-портал","baseWidth":3.6,"baseHeight":2.35,
+  "outerFrame":{"w":3.6,"h":2.35,"t":0.12,"d":0.20},
+  "sections":[
+    {"index":0,"role":"portal","x":-0.88,"y":0,"w":1.65,"h":2.05,"t":0.075,"d":0.12,"hinge":"left","motion":"psk","handleSide":1},
+    {"index":1,"role":"portal_fixed","x":0.88,"y":0,"w":1.65,"h":2.05,"t":0.075,"d":0.12,"hinge":"right","motion":"fixed","handleSide":-1}
+  ],
+  "staticParts":[
+    {"kind":"box","x":0,"y":0,"z":0,"w":0.09,"h":2.08,"d":0.19,"material":"frame"},
+    {"kind":"box","x":0,"y":-1.02,"z":0.02,"w":3.34,"h":0.05,"d":0.25,"material":"metal"}
+  ]
+}
