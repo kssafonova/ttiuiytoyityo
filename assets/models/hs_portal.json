@@ -1,0 +1,16 @@
+{
+  "id": "hs_portal",
+  "name": "HS-портал",
+  "baseWidth": 4.40,
+  "baseHeight": 2.55,
+  "parts": [
+    {"kind":"frame","x":0,"y":0,"w":4.40,"h":2.55,"t":0.11,"d":0.18,"material":"frame"},
+    {"kind":"frame","x":-1.08,"y":0,"w":2.03,"h":2.21,"t":0.065,"d":0.095,"material":"frame","role":"sliding_leaf"},
+    {"kind":"glass","x":-1.08,"y":0,"w":1.89,"h":2.07,"d":0.025,"material":"glass"},
+    {"kind":"box","x":0,"y":0,"z":0,"w":0.08,"h":2.29,"d":0.17,"material":"frame","role":"center_profile"},
+    {"kind":"frame","x":1.08,"y":0,"w":2.03,"h":2.21,"t":0.065,"d":0.095,"material":"frame","role":"fixed_leaf"},
+    {"kind":"glass","x":1.08,"y":0,"w":1.89,"h":2.07,"d":0.025,"material":"glass"},
+    {"kind":"handle","x":-0.18,"y":0.02,"z":0.13,"side":-1,"material":"metal"},
+    {"kind":"box","x":0,"y":-1.12,"z":0.02,"w":4.14,"h":0.055,"d":0.28,"material":"metal","role":"rail"}
+  ]
+}
