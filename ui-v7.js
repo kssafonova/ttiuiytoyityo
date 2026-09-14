@@ -15,8 +15,17 @@
       media.innerHTML=`<img src="${src}" alt="" loading="eager">`;
     });
   }
+  function loadDynamic3D(){
+    if(!document.querySelector('link[href="styles-v10.css"]')){
+      const css=document.createElement('link');css.rel='stylesheet';css.href='styles-v10.css';document.head.appendChild(css);
+    }
+    if(!document.querySelector('script[src="window-3d-runtime.js"]')){
+      const js=document.createElement('script');js.src='window-3d-runtime.js';document.body.appendChild(js);
+    }
+  }
   function init(){
     decorate();
+    loadDynamic3D();
     const editor=document.getElementById('editor');
     if(!editor)return;
     new MutationObserver(decorate).observe(editor,{childList:true,subtree:true});
