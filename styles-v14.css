@@ -1,0 +1,17 @@
+/* LUMI v14 — structured site navigation */
+.main-nav{align-self:stretch!important;display:flex!important;align-items:stretch!important;gap:0!important}
+.main-nav>.nav-item,.main-nav>a.nav-link{position:relative;display:flex;align-items:center;height:72px;padding:0 15px;font-size:11px;font-weight:500;color:#303336;white-space:nowrap}
+.main-nav>.nav-item>.nav-trigger{appearance:none;border:0;background:transparent;padding:0;color:inherit;font:inherit;display:flex;align-items:center;gap:7px;height:100%;cursor:pointer}
+.main-nav>.nav-item>.nav-trigger:after{content:'⌄';font-size:10px;color:#8a8d90;transform:translateY(-1px)}
+.main-nav>.nav-item:hover>.nav-trigger,.main-nav>a.nav-link:hover{color:#000}
+.nav-mega{position:absolute;left:0;top:100%;min-width:310px;padding:22px 24px 20px;background:#fff;border:1px solid #e8e8e4;box-shadow:0 18px 42px rgba(20,24,28,.10);opacity:0;visibility:hidden;transform:translateY(8px);transition:.16s ease;z-index:200}
+.nav-item:hover>.nav-mega,.nav-item:focus-within>.nav-mega{opacity:1;visibility:visible;transform:translateY(0)}
+.nav-mega strong{display:block;margin:0 0 14px;font-size:15px;letter-spacing:-.02em;font-weight:600;color:#111315}
+.nav-mega ul{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.nav-mega li a{display:block;font-size:12px;color:#5e6266;line-height:1.35}
+.nav-mega li a:hover{color:#111315}
+.nav-all{display:inline-flex!important;align-items:center;gap:8px;margin-top:17px;padding-top:14px;border-top:1px solid #ecece8;width:100%;font-size:11px!important;font-weight:600!important;color:#111315!important}
+.nav-all:after{content:'→';font-size:13px}
+.nav-item.is-wide .nav-mega{min-width:340px}
+@media(max-width:1180px){.main-nav>.nav-item,.main-nav>a.nav-link{padding:0 9px;font-size:10px}.top-actions .location{display:none!important}}
+@media(max-width:920px){.main-nav{display:none!important}}
