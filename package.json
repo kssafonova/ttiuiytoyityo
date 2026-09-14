@@ -4,6 +4,6 @@
   "version": "6.0.0",
   "scripts": {
     "test": "node --test tests/product-scenarios-v6.test.cjs",
-    "check": "node --check data-v3.js && node --check scenario-rules-v2.js && node --check core-v4.js && node --check ui-v6.js"
+    "check": "node --check data-v3.js && node --check scenario-rules-v2.js && node --check core-v4.js && node --check ui-v6.js && node --check ui-v7.js && node --check window-3d-v3.js"
   }
 }
