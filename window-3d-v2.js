@@ -47,7 +47,12 @@ function materials(){
   const aluminum=s?.material==='mat_aluminum';
   const solar=['cf_solar','cf_yearround'].includes(s?.comfort);
   return {
-    frame:new THREE.MeshPhysicalMaterial({color:aluminum?0x3c4348:0xf1f3f2,roughness:aluminum?.34:.58,metalness:aluminum?.62:.03,clearcoat:.18}),
+    frame:new THREE.MeshPhysicalMaterial({
+      color:aluminum?0x3c4348:0xf1f3f2,
+      roughness:aluminum?0.34:0.58,
+      metalness:aluminum?0.62:0.03,
+      clearcoat:0.18
+    }),
     glass:new THREE.MeshPhysicalMaterial({color:solar?0x8faebb:0xb9d8e7,transparent:true,opacity:.34,roughness:.06,metalness:0,transmission:.38,thickness:.04,side:THREE.DoubleSide}),
     metal:new THREE.MeshStandardMaterial({color:0x858e94,metalness:.82,roughness:.25}),
     sill:new THREE.MeshStandardMaterial({color:0xd7dbde,roughness:.78})
