@@ -1,9 +1,27 @@
 {
-  "name": "lumi-configurator",
+  "name": "oknova-site",
   "private": true,
-  "version": "6.1.0",
+  "version": "1.0.0",
+  "type": "module",
   "scripts": {
-    "test": "node --test tests/product-scenarios-v6.test.cjs tests/3d-v5.test.cjs",
-    "check": "node --check data-v3.js && node --check scenario-rules-v2.js && node --check core-v4.js && node --check ui-v6.js && node --check ui-v7.js && node --check window-3d-model-spec-v5.js && node --check window-3d-geometry-v5.js && node --check window-3d-app-v5.js"
+    "dev": "vite",
+    "fonts": "node scripts/download-fonts.mjs",
+    "build": "npm run fonts && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.0.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^6.0.0",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.7.0",
+    "vite": "^8.0.5"
   }
 }
