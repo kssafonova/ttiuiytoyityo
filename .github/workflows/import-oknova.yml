@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - oknova-source.tar.gz.b64
+      - oknova-source.tar.gz.b64.part6
 
 permissions:
   contents: write
@@ -18,7 +18,8 @@ jobs:
 
       - name: Unpack site source
         run: |
-          base64 -d oknova-source.tar.gz.b64 > /tmp/oknova-source.tar.gz
+          cat oknova-source.tar.gz.b64.part* > /tmp/oknova-source.tar.gz.b64
+          base64 -d /tmp/oknova-source.tar.gz.b64 > /tmp/oknova-source.tar.gz
           tar -xzf /tmp/oknova-source.tar.gz -C .
 
       - name: Reuse lightweight preview assets
@@ -31,7 +32,7 @@ jobs:
 
       - name: Commit imported project
         run: |
-          rm -f oknova-source.tar.gz.b64
+          rm -f oknova-source.tar.gz.b64.part*
           rm -f .github/workflows/import-oknova.yml
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
